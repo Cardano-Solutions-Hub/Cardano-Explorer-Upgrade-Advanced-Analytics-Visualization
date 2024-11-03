@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-background-color: #B7BCC9;
+  --secondary-background-color: #3E4758;
+  --card-background-color: #C6CBD7;
+  --primary-font-color: #fff;
+  --graph-bg: #D9D9D9;
+  --table-bg: #555E6F;
+  --table-text-secondary: #0E9CFF;
+  --table-text-primary: #B7BCC9;
+}
