@@ -6,6 +6,7 @@ import Transactions from "./pages/Transaction";
 import TokenDetails from "./pages/TokenDetail";
 import TransactionDetails from "./pages/TransactionDetail";
 import BlockDetails from "./pages/BlockDetail";
+import Accounts from "./pages/Account";
 
 function App() {
   return(
@@ -18,6 +19,7 @@ function App() {
       <Route path="/tokens/:id" element={<TokenDetails />} />
       <Route path="/transactions" element={<Transactions />} />
       <Route path="/transactions/:id" element={<TransactionDetails />} />
+      <Route path="/accounts" element={<Accounts />} />
     </Routes>
   </BrowserRouter>
   )
