@@ -5,6 +5,7 @@ import Table from "../components/Table";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { TOKEN_API } from "../constant";
+import { Link } from "react-router-dom";
 
 function formatHash(hash) {
   if (!hash) return "N/A";
@@ -25,7 +26,9 @@ function Tokens() {
     setLoading(true);
     setIsSuccessful(false);
     try {
-      const response = await axios.get(`${TOKEN_API}?cursor=${pageCursor || ''}`);
+      const response = await axios.get(
+        `${TOKEN_API}.json?rows=true&cursor=${pageCursor || ""}`
+      );
       const data = response.data;
 
       console.log("Response (Tokens):", data);
@@ -57,7 +60,7 @@ function Tokens() {
     "First Transaction",
     "Last Transaction",
     "Transactions",
-    "Holders"
+    "Holders",
   ];
 
   const defaultValues = {
@@ -77,28 +80,51 @@ function Tokens() {
   const bodies =
     tokenData?.rows?.map((row) => ({
       content: [
-        {  value: (
+        {
+          value: (
             <div>
               {row.image === "" ? (
                 <div>{defaultValues.image}</div>
               ) : (
-                <img 
-                  src={`https://ipfs.io/ipfs/${row.image.replace('ipfs://', '')}`} 
-                  width={50} 
-                  alt="Token Image" 
+                <img
+                  src={`https://ipfs.io/ipfs/${row.image.replace(
+                    "ipfs://",
+                    ""
+                  )}`}
+                  width={50}
+                  alt="Token Image"
                 />
               )}
-            </div>),
-            isDiv: true,
+            </div>
+          ),
+          isDiv: true,
         },
-        { value: formatHash(row.policy) ?? defaultValues.policy },
+        {
+          value: (
+            <Link
+              to={`/tokens/${row.policy}${row.asset_name_hex}`}
+              className="text-secondaryTableText"
+            >
+              {formatHash(row.policy)}
+            </Link>
+          ),
+          isDiv: true,
+        },
         { value: row.name == "" ? defaultValues.name : row.name },
         { value: formatHash(row.fingerprint) ?? defaultValues.fingerprint },
         { value: row.ticker ?? defaultValues.ticker },
         { value: row.supply ?? defaultValues.supply },
         { value: row.decimals ?? defaultValues.decimals },
-        { value: row.first_tx_time ? new Date(row.first_tx_time * 1000).toLocaleString() : defaultValues.first_tx },
-        { value: row.last_tx_time ? new Date(row.last_tx_time * 1000).toLocaleString() : defaultValues.last_tx },
+        {
+          value: row.first_tx_time
+            ? new Date(row.first_tx_time * 1000).toLocaleString()
+            : defaultValues.first_tx,
+        },
+        {
+          value: row.last_tx_time
+            ? new Date(row.last_tx_time * 1000).toLocaleString()
+            : defaultValues.last_tx,
+        },
         { value: row.tx ?? defaultValues.tx },
         { value: row.holder ?? defaultValues.holder },
       ],
@@ -141,7 +167,9 @@ function Tokens() {
                 <Card
                   left={
                     <div className="px-4 text-center">
-                      <div className="text-xl text-white">{tokenData.data.token}</div>
+                      <div className="text-xl text-white">
+                        {tokenData.data.token}
+                      </div>
                       <div className="text-white text-sm">TOTAL TOKEN</div>
                     </div>
                   }

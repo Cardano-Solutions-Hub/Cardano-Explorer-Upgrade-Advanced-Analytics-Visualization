@@ -7,6 +7,7 @@ import axios from "axios";
 import { TRANSACTION_API } from "../constant";
 import byteSize from "byte-size";
 import toPercent from 'decimal-to-percent';
+import { Link } from "react-router-dom";
 
 function formatHash(hash) {
   if (!hash) return "N/A";
@@ -28,7 +29,7 @@ function Transactions() {
     setIsSuccessful(false);
     try {
       const response = await axios.get(
-        `${TRANSACTION_API}?cursor=${pageCursor || ""}`
+        `${TRANSACTION_API}.json?rows=true&cursor=${pageCursor || ""}`
       );
       const data = response.data;
 
@@ -90,9 +91,9 @@ function Transactions() {
       content: [
         {
           value: (
-            <div className="text-secondaryTableText">
+            <Link className="text-secondaryTableText" to={`/transactions/${row.hash}`}>
               {formatHash(row.hash) ?? "N/A"}
-            </div>
+            </Link>
           ),
           isDiv: true,
         },

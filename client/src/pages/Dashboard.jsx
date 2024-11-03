@@ -38,7 +38,7 @@ function Dashboard() {
       try {
         // Make the Axios requests
         const getEpoch = axios.get(EPOCH_API);
-        const getBlocks = axios.get(BLOCK_API);
+        const getBlocks = axios.get(`${BLOCK_API}.json?rows=true`);
         const responses = await axios.all([getEpoch, getBlocks]);
 
         // Handle responses

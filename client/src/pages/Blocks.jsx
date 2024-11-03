@@ -2,6 +2,7 @@ import NavBar from "../components/NavBar";
 import Menu from "../components/Menu";
 import Card from "../components/Card";
 import Table from "../components/Table";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BLOCK_API } from "../constant";
@@ -27,7 +28,7 @@ function Blocks() {
     setLoading(true);
     setIsSuccessful(false);
     try {
-      const response = await axios.get(`${BLOCK_API}?cursor=${pageCursor || ''}`);
+      const response = await axios.get(`${BLOCK_API}.json?rows=true&cursor=${pageCursor || ''}`);
       const data = response.data;
 
       console.log("Response (Blocks):", data);
@@ -80,9 +81,9 @@ function Blocks() {
         {
           value: (
             <div>
-              <div className="text-secondaryTableText">
+              <Link className="text-secondaryTableText" to={`/blocks/${row.hash}`}>
                 {formatHash(row.hash) ?? "N/A"}
-              </div>
+              </Link>
               <div className="text-sm text-primaryTableText">
                 {row.no ?? defaultValues.no}
               </div>
