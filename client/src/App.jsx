@@ -7,6 +7,8 @@ import TokenDetails from "./pages/TokenDetail";
 import TransactionDetails from "./pages/TransactionDetail";
 import BlockDetails from "./pages/BlockDetail";
 import Accounts from "./pages/Account";
+import Pools from "./pages/Pools";
+import PoolDetail from "./pages/PoolDetail";
 
 function App() {
   return(
@@ -20,6 +22,8 @@ function App() {
       <Route path="/transactions" element={<Transactions />} />
       <Route path="/transactions/:id" element={<TransactionDetails />} />
       <Route path="/accounts" element={<Accounts />} />
+      <Route path="/pools" element={<Pools />} />
+      <Route path="/pools/:id" element={<PoolDetail />} />
     </Routes>
   </BrowserRouter>
   )
