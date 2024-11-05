@@ -190,7 +190,7 @@ function Blocks() {
                 />
               </div>
 
-              <div className="mt-8 pr-4 sm:pl-4">
+              <div className="mt-8 pr-4 sm:pl-2">
                 <BarChartGraph chartData={blockSizesByEpoch} />
               </div>
 
