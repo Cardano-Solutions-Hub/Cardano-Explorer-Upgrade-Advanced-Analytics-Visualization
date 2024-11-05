@@ -28,7 +28,7 @@ function BarChartGraph({ chartData }) {
       </h2>
 
       <BarChart width={chartWidth} height={350} data={chartData}>
-        <rect x="65" y="0" width={chartWidth - 70} height={290} fill="#3E4758" />
+        <rect x="65" y="0" width={chartWidth - 75} height={290} fill="#3E4758" />
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="epoch" name="Epoch" />
         <YAxis />

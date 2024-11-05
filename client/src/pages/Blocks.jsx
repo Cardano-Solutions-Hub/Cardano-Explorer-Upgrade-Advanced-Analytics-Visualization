@@ -17,7 +17,6 @@ function formatHash(hash) {
 }
 
 function Blocks() {
-
   const [blockData, setBlockData] = useState({});
   const [loading, setLoading] = useState(true);
   const [isSuccessful, setIsSuccessful] = useState(false);
@@ -31,9 +30,7 @@ function Blocks() {
     try {
       const response = await axios.get(`${BLOCK_API}.json?rows=true&cursor=${pageCursor || ''}`);
       const data = response.data;
-
       console.log("Response (Blocks):", data);
-
       setBlockData(data);
       setCursor({ after: data.cursor.after, next: data.cursor.next });
       setIsSuccessful(true);
@@ -50,19 +47,7 @@ function Blocks() {
     fetchData();
   }, []);
 
-  const headers = [
-    "Block",
-    "Time",
-    "trx",
-    "Size",
-    "Pool Name",
-    "Slot",
-    "Epoch Slot",
-    "Amount",
-    "Output",
-    "Fee",
-  ];
-
+  const headers = ["Block", "Time", "trx", "Size", "Pool Name", "Slot", "Epoch Slot", "Amount", "Output", "Fee"];
   const defaultValues = {
     no: "N/A",
     time: "N/A",
@@ -76,40 +61,39 @@ function Blocks() {
     tx_fee: "0",
   };
 
-  const bodies =
-    blockData?.rows?.map((row) => ({
-      content: [
-        {
-          value: (
-            <div>
-              <Link className="text-secondaryTableText" to={`/blocks/${row.hash}`}>
-                {formatHash(row.hash) ?? "N/A"}
-              </Link>
-              <div className="text-sm text-primaryTableText">
-                {row.no ?? defaultValues.no}
-              </div>
+  const bodies = blockData?.rows?.map((row) => ({
+    content: [
+      {
+        value: (
+          <div>
+            <Link className="text-secondaryTableText" to={`/blocks/${row.hash}`}>
+              {formatHash(row.hash) ?? "N/A"}
+            </Link>
+            <div className="text-sm text-primaryTableText">
+              {row.no ?? defaultValues.no}
             </div>
-          ),
-          isDiv: true,
-        },
-        {
-          value: row.time
-            ? new Date(row.time * 1000).toLocaleString()
-            : defaultValues.time,
-        },
-        { value: row.tx ?? defaultValues.tx },
-        { value: row.size ?? defaultValues.size },
-        {
-          value: row.pool_name ?? defaultValues.pool_name,
-          style: "text-secondaryTableText",
-        },
-        { value: row.slot_no ?? defaultValues.slot_no },
-        { value: row.epoch_slot_no ?? defaultValues.epoch_slot_no },
-        { value: row.tx_amount ?? defaultValues.tx_amount },
-        { value: row.tx_out_sum ?? defaultValues.tx_out_sum },
-        { value: row.tx_fee ?? defaultValues.tx_fee },
-      ],
-    })) || [];
+          </div>
+        ),
+        isDiv: true,
+      },
+      {
+        value: row.time
+          ? new Date(row.time * 1000).toLocaleString()
+          : defaultValues.time,
+      },
+      { value: row.tx ?? defaultValues.tx },
+      { value: row.size ?? defaultValues.size },
+      {
+        value: row.pool_name ?? defaultValues.pool_name,
+        style: "text-secondaryTableText",
+      },
+      { value: row.slot_no ?? defaultValues.slot_no },
+      { value: row.epoch_slot_no ?? defaultValues.epoch_slot_no },
+      { value: row.tx_amount ?? defaultValues.tx_amount },
+      { value: row.tx_out_sum ?? defaultValues.tx_out_sum },
+      { value: row.tx_fee ?? defaultValues.tx_fee },
+    ],
+  })) || [];
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -123,38 +107,38 @@ function Blocks() {
       fetchData(cursor.after);
       setCurrentPage(currentPage + 1);
     }
-  };  
+  };
 
-// Transform block data for the chart
-const blockSizesByEpoch = blockData?.rows?.map(row => ({
-  epoch: row.epoch_no,
-  block_size: row.size,
-})) || [];
+  const blockSizesByEpoch = blockData?.rows?.map(row => ({
+    epoch: row.epoch_no,
+    block_size: row.size,
+  })) || [];
 
   const sumBlockSize = blockData.data ? byteSize(blockData.data.sum_block_size) : null;
   const minBlockSize = blockData.data ? byteSize(blockData.data.min_block_size) : null;
   const maxBlockSize = blockData.data ? byteSize(blockData.data.max_block_size) : null;
+
   return (
     <>
       <NavBar />
-      <main className="flex bg-primaryBg">
+      <main className="flex flex-col lg:flex-row bg-primaryBg">
         <Menu />
         {loading && (
-          <div className="flex items-center justify-center w-full h-screen ml-28">
+          <div className="flex items-center justify-center w-full h-screen lg:ml-28">
             <div className="text-black">
               <span className="loading loading-infinity loading-lg"></span>
             </div>
           </div>
         )}
         {error && (
-          <div className="flex items-center justify-center w-full h-screen ml-28">
+          <div className="flex items-center justify-center w-full h-screen lg:ml-28">
             <p className="text-red-600 text-lg font-bold">{error.message}</p>
           </div>
         )}
-        <div className="ml-28">
+        <div className="ml-2 sm:ml-6 lg:ml-28 flex-1">
           {isSuccessful && (
             <>
-              <div className="ml-14 flex flex-row gap-4">
+              <div className="flex flex-col lg:flex-row flex-wrap gap-4 p-4">
                 <Card
                   left={
                     <div className="px-4 text-center">
@@ -163,7 +147,7 @@ const blockSizesByEpoch = blockData?.rows?.map(row => ({
                     </div>
                   }
                   right={
-                    <div className="pl-12">
+                    <div className="pl-4 lg:pl-12">
                       <div className="text-lg text-white text-center mb-2">
                         Block Statistics
                       </div>
@@ -191,7 +175,7 @@ const blockSizesByEpoch = blockData?.rows?.map(row => ({
                     </div>
                   }
                   right={
-                    <div className="pl-12">
+                    <div className="pl-4 lg:pl-12">
                       <div className="text-lg text-white text-center mb-2">
                         Block size {`${sumBlockSize.value} ${sumBlockSize.unit}`}
                       </div>
@@ -203,11 +187,10 @@ const blockSizesByEpoch = blockData?.rows?.map(row => ({
                       </div>
                     </div>
                   }
-                  leftStyle="bg-secondaryBg"
                 />
               </div>
 
-              <div className="mt-8">
+              <div className="mt-8 pr-4 sm:pl-2">
                 <BarChartGraph chartData={blockSizesByEpoch} />
               </div>
 
@@ -217,7 +200,6 @@ const blockSizesByEpoch = blockData?.rows?.map(row => ({
 
               <Table headers={headers} bodies={bodies} />
 
-              {/* Pagination Controls */}
               <div className="join mt-4 flex justify-center mb-6">
                 <button
                   className="join-item btn"

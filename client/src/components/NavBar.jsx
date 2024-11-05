@@ -11,7 +11,7 @@ function NavBar() {
 
   return (
     <div className="navbar bg-base-100 bg-secondaryBg text-primaryFont border-b sticky top-0 z-10"> {/* Make navbar sticky */}
-      <div className="flex-none">
+      <div className="flex-none ml-10 lg:ml-0">
         <a className="btn btn-ghost text-xl" href='/'>ForgeSmit</a>
       </div>
       <div className="flex-1 flex justify-center">
