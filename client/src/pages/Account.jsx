@@ -5,6 +5,7 @@ import Table from "../components/Table";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ACCOUNT_API } from "../constant";
+import formatHash from "../lib/utils";
 
 function Accounts() {
   const [accountData, setAccountData] = useState({});
@@ -64,12 +65,12 @@ function Accounts() {
   const rowsContent = accountData?.rows
     ? accountData.rows.map((row) => ({
         content: [
-          { value: row.hash },
-          { value: row.bech32 },
+          { value: formatHash(row.hash) },
+          { value: formatHash(row.bech32) },
           { value: row.balance },
           { value: row.token },
           { value: row.total_reward_amount },
-          { value: row.first_tx_hash },
+          { value: formatHash(row.first_tx_hash) },
           { value: new Date(row.first_tx_time * 1000).toLocaleString() },
           { value: row.last_tx_hash },
           { value: new Date(row.last_tx_time * 1000).toLocaleString() },
@@ -191,7 +192,7 @@ function Accounts() {
                     Account Types
                   </p>
     
-                  <div className="overflow-x-auto w-[35%]">
+                  <div className="overflow-x-auto w-[55%]">
                     <Table headers={headers} bodies={accountTypeRows} />
                   </div>
 
@@ -199,12 +200,12 @@ function Accounts() {
                     Accounts
                   </p>
 
-                  <div className="overflow-x-auto w-[35%]">
+                  <div className="overflow-x-auto w-[55%]">
                     <Table headers={rowheaders} bodies={rowsContent} />
                   </div>
     
                   {/* Pagination Controls */}
-                  <div className="join mt-4 ml-64 mb-6">
+                  <div className="join mt-4 ml-96 mb-6">
                     <button
                       className="join-item btn"
                       disabled={currentPage === 1}

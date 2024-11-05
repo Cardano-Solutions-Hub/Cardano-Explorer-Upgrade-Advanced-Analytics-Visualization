@@ -210,7 +210,7 @@ function Pools() {
               </div>
 
               {/* Pagination Controls */}
-              <div className="join mt-4 ml-64 mb-6">
+              <div className="join mt-4 ml-96 mb-6">
                 <button
                   className="join-item btn"
                   disabled={currentPage === 1}

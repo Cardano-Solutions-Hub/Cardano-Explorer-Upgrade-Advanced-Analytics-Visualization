@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BLOCK_API } from "../constant";
 import byteSize from "byte-size";
+import BarChartGraph from "../components/BarChart";
 
 function formatHash(hash) {
   if (!hash) return "N/A";
@@ -124,6 +125,12 @@ function Blocks() {
     }
   };  
 
+// Transform block data for the chart
+const blockSizesByEpoch = blockData?.rows?.map(row => ({
+  epoch: row.epoch_no,
+  block_size: row.size,
+})) || [];
+
   const sumBlockSize = blockData.data ? byteSize(blockData.data.sum_block_size) : null;
   const minBlockSize = blockData.data ? byteSize(blockData.data.min_block_size) : null;
   const maxBlockSize = blockData.data ? byteSize(blockData.data.max_block_size) : null;
@@ -198,6 +205,10 @@ function Blocks() {
                   }
                   leftStyle="bg-secondaryBg"
                 />
+              </div>
+
+              <div className="mt-8">
+                <BarChartGraph chartData={blockSizesByEpoch} />
               </div>
 
               <p className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">
