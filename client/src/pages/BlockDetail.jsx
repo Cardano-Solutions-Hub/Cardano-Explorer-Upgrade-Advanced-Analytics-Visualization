@@ -7,6 +7,13 @@ import Menu from "../components/Menu";
 import Table from "../components/Table";
 import { FiInfo } from "react-icons/fi";
 import Card from "../components/Card";
+import { AiOutlinePieChart, AiOutlineBlock, AiOutlineProfile, AiOutlineFieldNumber} from "react-icons/ai";
+import { TbTransactionDollar } from "react-icons/tb";
+import { IoIosTimer } from "react-icons/io";
+import { PiTimerLight } from "react-icons/pi";
+import { MdHistory, MdTitle, MdQrCode } from "react-icons/md";
+import { GoHash } from "react-icons/go";
+
 
 function formatHash(hash) {
   if (!hash) return "N/A";
@@ -97,26 +104,47 @@ function BlockDetails() {
                   right={
                     <div>
                       <div className="text-lg text-white text-start mb-2 leading-9">
-                        General Info
+                      <div className="flex flex-row items-center gap-2">
+                          <AiOutlineProfile />
+                          General Info
+                        </div>
                       </div>
                       <hr />
                       <div className="text-sm text-white text-start leading-9">
-                        Block No ....................... {blockData.no}
+                        <div className="flex flex-row items-center gap-2">
+                          <AiOutlineBlock size="1.3em"/>
+                          Block No ....................... {blockData.no}
+                        </div>
                       </div>
                       <div className="text-sm text-white text-start leading-9">
-                        Epoch .......................... {blockData.epoch_no}
+                        <div className="flex flex-row items-center gap-2">
+                          <MdHistory size="1.3em"/>
+                          Epoch .......................... {blockData.epoch_no}
+                        </div>
                       </div>
                       <div className="text-sm text-white text-start leading-9">
-                        Slot ............................. {blockData.slot_no}
+                        <div className="flex flex-row items-center gap-2">
+                          <PiTimerLight size="1.3em"/>
+                          Slot ............................. {blockData.slot_no}
+                        </div>
                       </div>
                       <div className="text-sm text-white text-start leading-9">
+                        <div className="flex flex-row gap-2 items-center">
+                        <IoIosTimer size="1.3em"/>
                         Time ........................... {new Date(blockData.time * 1000).toLocaleString()}
+                        </div>
                       </div>
                       <div className="text-sm text-white text-start leading-9">
-                        Transactions ................. {blockData.tx}
+                        <div className="flex flex-row gap-2 items-center">
+                          <TbTransactionDollar size="1.3em"/>
+                          Transactions ................. {blockData.tx}
+                        </div>
                       </div>
                       <div className="text-sm text-white text-start leading-9">
-                        Size ............................ {blockData.size} bytes
+                        <div className="flex flex-row gap-2 items-center">
+                          <AiOutlinePieChart size='1.3em' /> 
+                          Size ............................ {blockData.size} bytes
+                        </div>
                       </div>
                     </div>
                   }
@@ -128,20 +156,35 @@ function BlockDetails() {
                   right={
                     <div>
                       <div className="text-lg text-white text-start mb-2 leading-9">
-                        Pool Info
+                        <div className="flex flex-row items-center gap-2">
+                          <AiOutlineProfile />
+                          Pool Info
+                        </div>
                       </div>
                       <hr />
                       <div className="text-sm text-white text-start leading-9">
+                        <div className="flex flex-row items-center gap-2">
+                        <GoHash size='1.3em'/>
                         Pool Hash ...................... {formatHash(blockData.pool_hash)}
+                        </div>
                       </div>
                       <div className="text-sm text-white text-start leading-9">
+                        <div className="flex flex-row items-center gap-2">
+                        <MdTitle size='1.3em'/>
                         Pool Name ..................... {blockData.pool_name || "N/A"}
+                        </div>
                       </div>
                       <div className="text-sm text-white text-start leading-9">
+                        <div className="flex flex-row items-center gap-2">
+                        <AiOutlineFieldNumber size='1.3em'/>
                         Pool Ticker .................... {blockData.pool_ticker || "N/A"}
+                        </div>
                       </div>
                       <div className="text-sm text-white text-start leading-9">
-                        Bech32 ......................... {formatHash(blockData.pool_bech32)}
+                        <div className="flex flex-row items-center gap-2">
+                          <MdQrCode size="1.3em"/>
+                          Bech32 ......................... {formatHash(blockData.pool_bech32)}
+                        </div>
                       </div>
                     </div>
                   }

@@ -8,6 +8,11 @@ import Table from "../components/Table";
 import { FiInfo } from "react-icons/fi";
 import Card from "../components/Card";
 import formatHash from "../lib/utils";
+import { FaPercent } from "react-icons/fa";
+import { BiMoney, BiCoinStack } from "react-icons/bi";
+import { MdStackedLineChart, MdOutlineAttachMoney } from "react-icons/md";
+import { AiOutlineLineChart } from "react-icons/ai";
+import { CiCircleInfo } from "react-icons/ci";
 
 function PoolDetail() {
   const { id } = useParams(); // Get pool ID from the URL
@@ -23,7 +28,7 @@ function PoolDetail() {
       try {
         const response = await axios.get(`${POOL_API}/${id}.json?`);
         setPoolData(response.data.data);
-        setIsSuccessful(true)
+        setIsSuccessful(true);
       } catch (err) {
         console.error("Error fetching pool data:", err);
         setError(err);
@@ -37,14 +42,15 @@ function PoolDetail() {
   }, [id]);
 
   const ownerHeaders = ["Owner Hash", "Bech32", "Live Stake", "Active Stake"];
-  const ownerBodies = poolData?.owners.map((owner) => ({
-    content: [
-      { value: formatHash(owner.hash) },
-      { value: formatHash(owner.bech32) },
-      { value: `₳${(owner.live_stake / 1e6).toFixed(2)}` },
-      { value: `₳${(owner.active_stake / 1e6).toFixed(2)}` },
-    ],
-  })) || [];
+  const ownerBodies =
+    poolData?.owners.map((owner) => ({
+      content: [
+        { value: formatHash(owner.hash) },
+        { value: formatHash(owner.bech32) },
+        { value: `₳${(owner.live_stake / 1e6).toFixed(2)}` },
+        { value: `₳${(owner.active_stake / 1e6).toFixed(2)}` },
+      ],
+    })) || [];
 
   return (
     <>
@@ -86,26 +92,39 @@ function PoolDetail() {
                         General Info
                       </div>
                       <hr />
-                      <div className="text-sm text-white text-start leading-9">
-                        Pool Name ...................... {poolData.name || "N/A"}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                      <CiCircleInfo />
+                        Pool Name ......................{" "}
+                        {poolData.name || "N/A"}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Ticker ........................... {poolData.ticker || "N/A"}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <BiCoinStack size="1.3em" />
+                        Ticker ...........................{" "}
+                        {poolData.ticker || "N/A"}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <FaPercent size="1.3em" />
                         Margin .......................... {poolData.margin}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Fixed Cost ....................... ₳{(poolData.fixed_cost / 1e6).toFixed(2)}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <MdOutlineAttachMoney size="1.3em" />
+                        Fixed Cost ....................... ₳
+                        {(poolData.fixed_cost / 1e6).toFixed(2)}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Pledge ........................... ₳{(poolData.pledge / 1e6).toFixed(2)}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <BiMoney size="1.3em" />
+                        Pledge ........................... ₳
+                        {(poolData.pledge / 1e6).toFixed(2)}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Active Stake .................... ₳{(poolData.active_stake / 1e6).toFixed(2)}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <MdStackedLineChart size="1.3em" />
+                        Active Stake .................... ₳
+                        {(poolData.active_stake / 1e6).toFixed(2)}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Live Stake ........................ ₳{(poolData.live_stake / 1e6).toFixed(2)}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <AiOutlineLineChart size="1.3em" />
+                        Live Stake ........................ ₳
+                        {(poolData.live_stake / 1e6).toFixed(2)}
                       </div>
                     </div>
                   }
