@@ -10,6 +10,9 @@ import { IoKeyOutline } from "react-icons/io5";
 import { LiaFileContractSolid } from "react-icons/lia";
 import { PiLadderSimple } from "react-icons/pi";
 import Card from "../components/Card";
+import { FaCube, FaUsers, FaExchangeAlt, FaCalendarAlt } from "react-icons/fa";
+import { AiOutlineFieldNumber } from "react-icons/ai";
+import { MdPolicy, MdInfo, MdOutlineCategory } from "react-icons/md";
 
 function formatHash(hash) {
   if (!hash) return "N/A";
@@ -157,91 +160,84 @@ function TokenDetails() {
                 </div>
               </div>
 
-              <div className="flex flex-row ml-8 gap-6 pb-9">
-                <Card
-                  right={
-                    <div>
-                      <div className="text-lg text-white text-start mb-2 leading-9">
-                        General Info
-                      </div>
+              <div className="flex flex-row ml-8 gap-6 pb-9 flex-wrap">
+              <Card
+  right={
+    <div>
+      <div className="text-lg text-white text-start mb-2 leading-9">
+        General Info
+      </div>
+      <hr />
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <FaCube size="1.3em" />
+        Total Supply ................... {token.data.supply}
+      </div>
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <FaUsers size="1.3em" />
+        Holders ................... {token.data.holder}
+      </div>
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <FaExchangeAlt size="1.3em" />
+        Transactions ................... {token.data.tx}
+      </div>
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <FaCalendarAlt size="1.3em" />
+        First Activity ...................{" "}
+        {new Date(token.data.first_tx_time * 1000).toLocaleString()}
+      </div>
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <FaCalendarAlt size="1.3em" />
+        Last Activity ...................{" "}
+        {new Date(token.data.last_tx_time * 1000).toLocaleString()}
+      </div>
+    </div>
+  }
+  one={true}
+/>
 
-                      <hr />
-                      <div className="text-sm text-white text-start leading-9">
-                        Total Supply ................... {token.data.supply}
-                      </div>
+<Card
+  right={
+    <div>
+      <div className="text-lg text-white text-start mb-2 leading-9">
+        Transaction Content
+      </div>
+      <hr />
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <MdPolicy size="1.3em" />
+        Policy Token ................... {token.data.policy_token}
+      </div>
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <FaUsers size="1.3em" />
+        Policy Holders ...............{token.data.policy_holder}
+      </div>
+    </div>
+  }
+  one={true}
+/>
 
-                      <div className="text-sm text-white text-start leading-9">
-                        Holders ................... {token.data.holder}
-                      </div>
-
-                      <div className="text-sm text-white text-start leading-9">
-                        Transactions ................... {token.data.tx}
-                      </div>
-
-                      <div className="text-sm text-white text-start leading-9">
-                        First Activity ...................{" "}
-                        {new Date(
-                          token.data.first_tx_time * 1000
-                        ).toLocaleString()}
-                      </div>
-
-                      <div className="text-sm text-white text-start leading-9">
-                        Last Activity ...................{" "}
-                        {new Date(
-                          token.data.last_tx_time * 1000
-                        ).toLocaleString()}
-                      </div>
-                    </div>
-                  }
-                  one={true}
-                />
-
-                <Card
-                  right={
-                    <div>
-                      <div className="text-lg text-white text-start mb-2 leading-9">
-                        Transaction Content
-                      </div>
-
-                      <hr />
-                      <div className="text-sm text-white text-start leading-9">
-                        Policy Token ...................{" "}
-                        {token.data.policy_token}
-                      </div>
-
-                      <div className="text-sm text-white text-start leading-9">
-                        Policy Holders ...................{" "}
-                        {token.data.policy_holder}
-                      </div>
-                    </div>
-                  }
-                  one={true}
-                />
-
-                <Card
-                  right={
-                    <div>
-                      <div className="text-lg text-white text-start mb-2 leading-9">
-                        Token Info
-                      </div>
-
-                      <hr />
-                      <div className="text-sm text-white text-start leading-9">
-                        Asset name ................... {token.data.name}
-                      </div>
-
-                      <div className="text-sm text-white text-start leading-9">
-                        Decimals ................... {token.data.decimals}
-                      </div>
-
-                      <div className="text-sm text-white text-start leading-9">
-                        Token type ...................{" "}
-                        {token.data.nft ? "NFT" : "Fungible Token"}
-                      </div>
-                    </div>
-                  }
-                  one={true}
-                />
+<Card
+  right={
+    <div>
+      <div className="text-lg text-white text-start mb-2 leading-9">
+        Token Info
+      </div>
+      <hr />
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <MdInfo size="1.3em" />
+        Asset Name ............... {token.data.name}
+      </div>
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <AiOutlineFieldNumber size="1.3em" />
+        Decimals ................ {token.data.decimals}
+      </div>
+      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+        <MdOutlineCategory size="1.3em" />
+        Token Type ................ {token.data.nft ? "NFT" : "Fungible Token"}
+      </div>
+    </div>
+  }
+  one={true}
+/>
               </div>
 
               <div

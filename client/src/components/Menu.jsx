@@ -5,7 +5,7 @@ import BlockIcon from "../assets/blocks-icon.png";
 import DashboardIcon from "../assets/dashboard-icon.png";
 import PoolIcon from "../assets/pools-icon.png";
 import TokenImage from "../assets/token-image.png";
-import TransactionImage from "../assets/transactions-icon.png";
+import TransactionImage from "../assets/coins.png";
 import MenuIcon from "../assets/menu-icon.png"; // Add an icon for the menu toggle button
 
 const iconList = [

@@ -4,8 +4,8 @@ import InfoCard from "../components/InfoCard";
 import DollarSign from "../assets/dollar-sing.png";
 import UserIcon from "../assets/user.png";
 import PoolsIcon from "../assets/pools.png";
-import EpochIcon from "../assets/pools.png";
-import ADAIcon from "../assets/ada.png";
+import EpochIcon from "../assets/epoch.png";
+import CoinIcon from "../assets/coins.png";
 import MarketCapIcon from "../assets/market-cap.png";
 import { EPOCH_API, BLOCK_API } from "../constant";
 import axios from "axios";
@@ -162,7 +162,7 @@ function Dashboard() {
                 body={epochData.rows[0]?.no}
               />
               <InfoCard
-                image={ADAIcon}
+                image={CoinIcon}
                 width={50}
                 title="Circulating supply"
                 body={formatNumber(epochData.rows[0]?.circulating_supply)}

@@ -7,6 +7,22 @@ import Menu from "../components/Menu";
 import Table from "../components/Table";
 import { FiInfo } from "react-icons/fi";
 import Card from "../components/Card";
+import { PiTimerLight } from "react-icons/pi";
+import {
+  MdInput,
+  MdOutput,
+  MdAccountBalanceWallet,
+  MdAttachMoney,
+  MdReceipt,
+} from "react-icons/md";
+import {
+  AiOutlineBarcode,
+  AiOutlineNumber,
+  AiOutlineClockCircle,
+  AiOutlineTag,
+} from "react-icons/ai";
+import { BiTransfer, BiBlock } from "react-icons/bi";
+import { FaCertificate } from "react-icons/fa";
 
 function formatHash(hash) {
   if (!hash) return "N/A";
@@ -43,24 +59,23 @@ function TransactionDetails() {
     fetchTransactionData();
   }, [id]);
 
-  const headers = [
-    "Input/Output",
-    "Amount",
-    "Address",
-    "Token",
-    "Fingerprint",
-  ];
+  const headers = ["Input/Output", "Amount", "Address", "Token", "Fingerprint"];
 
   const bodies = [
-    ...transaction?.data.inputs?.rows.map((input) => ({
+    ...(transaction?.data.inputs?.rows.map((input) => ({
       content: [
         { value: "Input" },
         { value: input.amount },
         { value: formatHash(input.address) },
-        { value: input.tokens.map(token => token.name).join(", ") || "N/A" },
-        { value: formatHash(input.tokens.map(token => token.fingerprint).join(", ")) || "N/A" },
+        { value: input.tokens.map((token) => token.name).join(", ") || "N/A" },
+        {
+          value:
+            formatHash(
+              input.tokens.map((token) => token.fingerprint).join(", ")
+            ) || "N/A",
+        },
       ],
-    })) || []
+    })) || []),
   ];
 
   return (
@@ -96,30 +111,41 @@ function TransactionDetails() {
 
               {/* Card 1: General Info */}
               <div className="flex flex-row ml-8 gap-6 pb-9">
-              <Card
+                <Card
                   right={
                     <div>
                       <div className="text-lg text-white text-start mb-2 leading-9">
                         General Info
                       </div>
                       <hr />
-                      <div className="text-sm text-white text-start leading-9">
-                        Total Input .................. {transaction.data.inputs.rows.length}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <MdInput size="1.3em" />
+                        Total Input ..................{" "}
+                        {transaction.data.inputs.rows.length}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Total Withdrawal ............ {transaction.data.withdrawals.rows.length}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <BiTransfer size="1.3em" />
+                        Total Withdrawal ............{" "}
+                        {transaction.data.withdrawals.rows.length}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Total Output ................. {transaction.data.inputs.rows.length}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <MdOutput size="1.3em" />
+                        Total Output .................{" "}
+                        {transaction.data.outputs.rows.length}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Amount ....................... ₳{transaction.data.amount}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <MdAccountBalanceWallet size="1.3em" />
+                        Amount ....................... ₳
+                        {transaction.data.amount}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <MdAttachMoney size="1.3em" />
                         Fee ........................... ₳{transaction.data.fee}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Deposit ...................... ₳{transaction.data.deposit}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <MdReceipt size="1.3em" />
+                        Deposit ...................... ₳
+                        {transaction.data.deposit}
                       </div>
                     </div>
                   }
@@ -133,19 +159,27 @@ function TransactionDetails() {
                         Transaction Content
                       </div>
                       <hr />
-                      <div className="text-sm text-white text-start leading-9">
-                        Inputs ....................... {transaction.data.inputs.rows.length}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <MdInput size="1.3em" />
+                        Inputs .......................{" "}
+                        {transaction.data.inputs.rows.length}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Outputs ...................... {transaction.data.outputs.rows.length}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <MdOutput size="1.3em" />
+                        Outputs ......................{" "}
+                        {transaction.data.outputs.rows.length}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <AiOutlineTag size="1.3em" />
                         Tokens ....................... {transaction.data.token}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Certificates .................. {transaction.data.certificate}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <FaCertificate size="1.3em" />
+                        Certificates ..................{" "}
+                        {transaction.data.certificate}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <AiOutlineBarcode size="1.3em" />
                         Size .......................... {transaction.data.size}
                       </div>
                     </div>
@@ -160,20 +194,32 @@ function TransactionDetails() {
                         Block Info
                       </div>
                       <hr />
-                      <div className="text-sm text-white text-start leading-9">
-                        Block ......................... {transaction.data.block_no}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <BiBlock size="1.3em" />
+                        Block .........................{" "}
+                        {transaction.data.block_no}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Epoch / Slot ................. {transaction.data.epoch_no} / {transaction.data.slot_no}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <AiOutlineNumber size="1.3em" />
+                        Epoch / Slot .................{" "}
+                        {transaction.data.epoch_no} / {transaction.data.slot_no}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Slot Number .................. {transaction.data.slot_no}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <PiTimerLight size="1.3em" />
+                        Slot Number ..................{" "}
+                        {transaction.data.slot_no}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Time .......................... {new Date(transaction.data.time * 1000).toLocaleString()}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <AiOutlineClockCircle size="1.3em" />
+                        Time ..........................{" "}
+                        {new Date(
+                          transaction.data.time * 1000
+                        ).toLocaleString()}
                       </div>
-                      <div className="text-sm text-white text-start leading-9">
-                        Confirmations ................ {transaction.data.confirmation}
+                      <div className="flex flex-row items-center gap-2 text-sm text-white text-start leading-9">
+                        <BiTransfer size="1.3em" />
+                        Confirmations ................{" "}
+                        {transaction.data.confirmation}
                       </div>
                     </div>
                   }
