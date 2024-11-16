@@ -87,19 +87,19 @@ function BlockDetails() {
         <div className="ml-28">
           {isSuccessful && (
             <>
-              <p className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">
+              <p className="mx-4 lg:mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">
                 Block Details
               </p>
               <hr className="border-b border-black w-[90%] mx-auto" />
-              <div className="gap-4 ml-6 flex flex-row items-center pt-6 pb-4">
+              <div className="gap-4 ml-4 lg:ml-6 flex flex-col lg:flex-row items-start lg:items-center pt-6 pb-4">
                 <FiInfo size="2.5em" color="#3E4758" />
-                <div className="text-xl text-secondaryBg">
+                <div className="text-lg lg:text-xl text-secondaryBg break-all">
                   Block Hash: {blockData.hash}
                 </div>
               </div>
 
               {/* Card 1: General Info */}
-              <div className="flex flex-row ml-8 gap-6 pb-9">
+              <div className="flex flex-col lg:flex-row ml-4 lg:ml-8 gap-6 pb-9">
                 <Card
                   right={
                     <div>

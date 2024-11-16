@@ -137,14 +137,14 @@ function Pools() {
           </div>
         )}
         {error && (
-          <div className="flex items-center justify-center w-full h-screen ml-28">
+          <div className="flex items-center justify-center w-full h-screen md:ml-28">
             <p className="text-red-600 text-lg font-bold">{error.message}</p>
           </div>
         )}
-        <div className="ml-28">
+        <div className="w-full md:w-auto md:ml-28">
           {isSuccessful && (
             <>
-              <div className="ml-14 flex flex-row flex-wrap w-[40%] gap-6">
+              <div className="ml-4 md:ml-14 md:flex md:flex-wrap md:w-[40%] gap-6">
                 <Card
                   left={
                     <div className="px-4 text-center">
@@ -199,18 +199,18 @@ function Pools() {
 
               <p className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">Pool Types</p>
 
-              <div className="overflow-x-auto w-[35%]">
+              <div className="overflow-x-auto w-full md:w-[35%]">
                 <Table headers={headers} bodies={poolTypeRows} />
               </div>
 
               <p className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">Pools</p>
 
-              <div className="overflow-x-auto w-[50%]">
+              <div className="overflow-x-auto w-full md:w-[50%]">
                 <Table headers={rowheaders} bodies={rowsContent} />
               </div>
 
               {/* Pagination Controls */}
-              <div className="join mt-4 ml-96 mb-6">
+              <div className="join mt-4 mx-auto md:ml-96 mb-6 flex justify-center">
                 <button
                   className="join-item btn"
                   disabled={currentPage === 1}

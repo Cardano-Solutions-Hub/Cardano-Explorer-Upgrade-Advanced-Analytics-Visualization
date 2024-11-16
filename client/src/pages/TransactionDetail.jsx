@@ -81,10 +81,10 @@ function TransactionDetails() {
   return (
     <>
       <NavBar />
-      <main className="flex bg-primaryBg">
+      <main className="flex flex-col lg:flex-row bg-primaryBg">
         <Menu />
         {loading && (
-          <div className="flex items-center justify-center w-full h-screen ml-28">
+          <div className="flex items-center justify-center w-full h-screen md:ml-28">
             <div className="text-black">
               <span className="loading loading-infinity loading-lg"></span>
             </div>
@@ -95,22 +95,22 @@ function TransactionDetails() {
             <p className="text-red-600 text-lg font-bold">{error.message}</p>
           </div>
         )}
-        <div className="ml-28">
+        <div className="lg:ml-28 w-full">
           {isSuccessful && (
             <>
-              <p className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">
+              <p className="mx-4 lg:mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">
                 Transaction
               </p>
               <hr className="border-b border-black w-[90%] mx-auto" />
-              <div className="gap-4 ml-6 flex flex-row items-center pt-6 pb-4">
+              <div className="gap-4 ml-4 lg:ml-6 flex flex-col lg:flex-row items-start lg:items-center pt-6 pb-4">
                 <FiInfo size="2.5em" color="#3E4758" />
-                <div className="text-xl text-secondaryBg">
+                <div className="text-lg lg:text-xl text-secondaryBg break-all">
                   {transaction.data.hash}
                 </div>
               </div>
 
               {/* Card 1: General Info */}
-              <div className="flex flex-row ml-8 gap-6 pb-9">
+              <div className="flex flex-col lg:flex-row ml-4 lg:ml-8 gap-6 pb-9">
                 <Card
                   right={
                     <div>

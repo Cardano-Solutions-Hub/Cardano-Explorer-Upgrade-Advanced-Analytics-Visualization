@@ -57,7 +57,7 @@ function Transactions() {
     "Amount",
     "Output",
     "Fee",
-    "Deposite",
+    "Deposit",
     "Tokens",
     "Size",
     "Script Size",
@@ -72,7 +72,7 @@ function Transactions() {
     amount: "N/A",
     output: "N/A",
     fee: "N/A",
-    deposite: "0",
+    deposit: "0",
     decimals: "0",
     token: "N/A",
     size: "0",
@@ -80,7 +80,6 @@ function Transactions() {
     slot: "0",
     block_index: "N/A"
   };
-
 
   const bodies =
     transactionData?.rows?.map((row) => {
@@ -105,7 +104,7 @@ function Transactions() {
         { value: row.amount == null ? defaultValues.amount : `₳${row.amount}` },
         { value: row.out_sum ? defaultValues.output : `₳${row.out_sum}` },
         { value: row.fee ?? defaultValues.fee },
-        { value: row.deposite ?? defaultValues.deposite },
+        { value: row.deposit ?? defaultValues.deposit },
         { value: row.token ?? defaultValues.token },
         { value: `${size.value}${size.unit}` },
         { value: `${scriptSize.value}${scriptSize.unit}` },
@@ -128,27 +127,28 @@ function Transactions() {
       setCurrentPage(currentPage + 1);
     }
   };
+
   return (
     <>
       <NavBar />
-      <main className="flex bg-primaryBg">
+      <main className="flex flex-col lg:flex-row bg-primaryBg">
         <Menu />
         {loading && (
-          <div className="flex items-center justify-center w-full h-screen ml-28">
+          <div className="flex items-center justify-center w-full h-screen lg:ml-28">
             <div className="text-black">
               <span className="loading loading-infinity loading-lg"></span>
             </div>
           </div>
         )}
         {error && (
-          <div className="flex items-center justify-center w-full h-screen ml-28">
+          <div className="flex items-center justify-center w-full h-screen lg:ml-28">
             <p className="text-red-600 text-lg font-bold">{error.message}</p>
           </div>
         )}
-        <div className="ml-28">
+        <div className="lg:ml-28 w-full px-4 sm:px-8">
           {isSuccessful && (
             <>
-              <div className="ml-14 flex flex-row gap-6">
+              <div className="lg:ml-14 flex flex-col sm:flex-row flex-wrap gap-6">
                 <Card
                   left={
                     <div className="px-4 text-center">
@@ -173,7 +173,7 @@ function Transactions() {
                   }
                 />
 
-<Card
+                <Card
                   right={
                     <div className="text-center">
                       <div className="text-lg text-white mb-2">
@@ -191,11 +191,11 @@ function Transactions() {
                 />
               </div>
 
-              <p className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">
+              <p className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg text-center sm:text-left">
                 Transaction
               </p>
 
-              <div className="overflow-x-auto w-[100%]">
+              <div className="overflow-x-auto sm:w-[95%]">
                 <Table headers={headers} bodies={bodies} />
               </div>
 
