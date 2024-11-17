@@ -9,6 +9,7 @@ import BlockDetails from "./pages/BlockDetail";
 import Accounts from "./pages/Account";
 import Pools from "./pages/Pools";
 import PoolDetail from "./pages/PoolDetail";
+import Analysis from "./pages/Analysis";
 
 function App() {
   return(
@@ -24,6 +25,7 @@ function App() {
       <Route path="/accounts" element={<Accounts />} />
       <Route path="/pools" element={<Pools />} />
       <Route path="/pools/:id" element={<PoolDetail />} />
+      <Route path="/analysis" element={<Analysis />} />
     </Routes>
   </BrowserRouter>
   )

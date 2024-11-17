@@ -33,6 +33,9 @@ function Tokens() {
 
       console.log("Response (Tokens):", data);
 
+      console.log(data.rows[7].policy);
+      console.log(data.rows[7].asset_name_hex);
+
       setTokenData(data);
       setCursor({ after: data.cursor.after, next: data.cursor.next });
       setIsSuccessful(true);
@@ -61,6 +64,7 @@ function Tokens() {
     "Last Transaction",
     "Transactions",
     "Holders",
+    "Analysis",
   ];
 
   const defaultValues = {
@@ -127,6 +131,17 @@ function Tokens() {
         },
         { value: row.tx ?? defaultValues.tx },
         { value: row.holder ?? defaultValues.holder },
+        {
+          value: (
+            <Link
+              to={`/analysis?policy=${row.policy}&asset_name_hex=${row.asset_name_hex}`}
+              className="text-blue-500 underline"
+            >
+              Analyze
+            </Link>
+          ),
+          isDiv: true,
+        },
       ],
     })) || [];
 

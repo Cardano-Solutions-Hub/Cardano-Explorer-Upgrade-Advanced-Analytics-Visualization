@@ -4,7 +4,7 @@ import tokenDistribution from '../controller/analysis.controller.js';
 
 const router = express.Router();
 
-router.post('/rest/v1/transaction-distribution', tokenDistribution);
+router.post('/rest/v1/token-distribution', tokenDistribution);
 router.use('/rest/v1/*', serverProxy);
 
 export default router;

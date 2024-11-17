@@ -24,6 +24,7 @@ const tokenDistribution = async (req, res, next) => {
 
   try {
     const response = await axios.get(api);
+    console.log(api);
     const { data, rows } = response.data;
 
     // calculate average supply
