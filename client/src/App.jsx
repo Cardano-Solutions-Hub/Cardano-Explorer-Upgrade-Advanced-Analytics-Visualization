@@ -10,6 +10,8 @@ import Accounts from "./pages/Account";
 import Pools from "./pages/Pools";
 import PoolDetail from "./pages/PoolDetail";
 import Analysis from "./pages/Analysis";
+import TransactionAnalysis from "./pages/TransactionAnalysis";
+import PoolGraphByEpoch from "./components/PoolGraphByEpoch";
 
 function App() {
   return(
@@ -26,6 +28,8 @@ function App() {
       <Route path="/pools" element={<Pools />} />
       <Route path="/pools/:id" element={<PoolDetail />} />
       <Route path="/analysis" element={<Analysis />} />
+      <Route path="/analysis-transactions" element={<TransactionAnalysis />} />
+      <Route path="/analysis-pools" element={<PoolGraphByEpoch />} />"
     </Routes>
   </BrowserRouter>
   )

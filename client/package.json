@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^1.7.7",
     "byte-size": "^9.0.0",
+    "d3": "^7.9.0",
     "decimal-to-percent": "^1.0.1",
     "millify": "^6.1.0",
     "react": "^18.3.1",
