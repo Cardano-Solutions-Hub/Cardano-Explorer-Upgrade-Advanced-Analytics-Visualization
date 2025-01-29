@@ -18,43 +18,40 @@ const PoolGraphByEpoch = () => {
   const d3Container = useRef(null);
 
   useEffect(() => {
-    try {
-        const fetchData = async () => {
-          try {
-            // Fetch data from the API
-            const response = await axios.get('http://localhost:5000/rest/v1/pools.json?rows=true&limit=1000');
-            const rows = response.data.rows;
-    
-            // Aggregate data by epoch
-            const epochData = rows.reduce((acc, pool) => {
-              const epoch = pool.block_epoch;
-              if (!epoch) return acc; // Skip pools without block_epoch
-    
-              if (!acc[epoch]) {
-                acc[epoch] = { epoch: epoch, totalPools: 0, producerPools: 0 };
-              }
-    
-              acc[epoch].totalPools += 1; // Count every pool
-              if (pool.block > 0) {
-                acc[epoch].producerPools += 1; // Count producer pools
-              }
-    
-              return acc;
-            }, {});
-    
-            // Convert aggregated data to an array
-            const chartData = Object.keys(epochData)
-              .sort((a, b) => Number(a) - Number(b)) // Sort by epoch
-              .map(epoch => ({
-                epoch: `${epoch}`,
-                totalPools: epochData[epoch].totalPools,
-                producerPools: epochData[epoch].producerPools,
-                ratio: (epochData[epoch].producerPools / epochData[epoch].totalPools) || 0,
-              }));
-    
-              setLineChartData(chartData);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/rest/v1/pools.json?rows=true&limit=1000');
+        const rows = response.data.rows;
 
-        // Process heatmap data (active stake, live stake)
+        // Aggregate data for line chart
+        const epochData = rows.reduce((acc, pool) => {
+          const epoch = pool.block_epoch;
+          if (!epoch) return acc;
+
+          if (!acc[epoch]) {
+            acc[epoch] = { epoch: epoch, totalPools: 0, producerPools: 0 };
+          }
+
+          acc[epoch].totalPools += 1;
+          if (pool.block > 0) {
+            acc[epoch].producerPools += 1;
+          }
+
+          return acc;
+        }, {});
+
+        const chartData = Object.keys(epochData)
+          .sort((a, b) => Number(a) - Number(b))
+          .map(epoch => ({
+            epoch: `${epoch}`,
+            totalPools: epochData[epoch].totalPools,
+            producerPools: epochData[epoch].producerPools,
+            ratio: (epochData[epoch].producerPools / epochData[epoch].totalPools) || 0,
+          }));
+
+        setLineChartData(chartData);
+
+        // Process heatmap data
         const epochDataForHeatmap = rows.reduce((acc, pool) => {
           const epoch = pool.block_epoch;
           if (!epoch || !pool.active_stake || !pool.live_stake) return acc;
@@ -77,7 +74,6 @@ const PoolGraphByEpoch = () => {
             liveStake: epochDataForHeatmap[epoch].liveStake,
           }));
 
-        console.log('Heatmap Data:', heatmapData);
         setHeatmapData(heatmapData);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -85,15 +81,7 @@ const PoolGraphByEpoch = () => {
     };
 
     fetchData();
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
   }, []);
-  // Ensure that the state data is properly set
-  useEffect(() => {
-    console.log('Line Chart Data (State):', lineChartData);
-    console.log('Heatmap Data (State):', heatmapData);
-  }, [lineChartData, heatmapData]);
 
   useEffect(() => {
     if (heatmapData.length > 0 && d3Container.current) {
@@ -101,8 +89,9 @@ const PoolGraphByEpoch = () => {
       svg.selectAll('*').remove();
 
       const margin = { top: 50, right: 30, bottom: 50, left: 60 };
-      const width = d3Container.current.clientWidth - margin.left - margin.right;
-      const height = 400 - margin.top - margin.bottom;
+      const containerWidth = d3Container.current.clientWidth;
+      const width = containerWidth - margin.left - margin.right;
+      const height = containerWidth / 2; // Maintain a 2:1 aspect ratio
 
       const epochs = heatmapData.map(d => d.epoch);
       const categories = ['Active Stake', 'Live Stake'];
@@ -111,30 +100,14 @@ const PoolGraphByEpoch = () => {
         .scaleSequential(d3.interpolateBlues)
         .domain([0, d3.max(heatmapData, d => Math.max(d.activeStake, d.liveStake))]);
 
-      const x = d3
-        .scaleBand()
-        .domain(epochs)
-        .range([0, width])
-        .padding(0.05);
+      const x = d3.scaleBand().domain(epochs).range([0, width]).padding(0.05);
+      const y = d3.scaleBand().domain(categories).range([0, height]).padding(0.05);
 
-      const y = d3
-        .scaleBand()
-        .domain(categories)
-        .range([0, height])
-        .padding(0.05);
+      const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-      const g = svg
-        .append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`);
+      g.append('g').attr('transform', `translate(0,${height})`).call(d3.axisBottom(x).tickValues([]));
 
-      // X-axis without labels
-      g.append('g')
-        .attr('transform', `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickValues([])); // No tick labels
-
-      // Heatmap cells
-      const cells = g
-        .selectAll('.cell')
+      g.selectAll('.cell')
         .data(
           heatmapData.flatMap(d => [
             { epoch: d.epoch, category: 'Active Stake', value: d.activeStake },
@@ -169,30 +142,34 @@ const PoolGraphByEpoch = () => {
         .on('mouseout', () => {
           d3.select('.tooltip').remove();
         });
-
-      // Legend at the bottom
-      const legend = svg
-        .append('g')
-        .attr('transform', `translate(${margin.left},${margin.top + height + 20})`);
-
-      legend
-        .selectAll('text')
-        .data(categories)
-        .enter()
-        .append('text')
-        .attr('x', (d, i) => i * 120)
-        .attr('y', 0)
-        .text(d => d)
-        .attr('fill', '#fff')
-        .style('font-size', '14px');
     }
   }, [heatmapData]);
 
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        if (d3Container.current) {
+          const { width } = entry.contentRect;
+          d3Container.current.setAttribute('width', width);
+          d3Container.current.setAttribute('height', width / 2); // Maintain 2:1 aspect ratio
+        }
+      }
+    });
+
+    if (d3Container.current) {
+      resizeObserver.observe(d3Container.current.parentElement);
+    }
+
+    return () => {
+      if (d3Container.current) {
+        resizeObserver.unobserve(d3Container.current.parentElement);
+      }
+    };
+  }, []);
+
   return (
     <div>
-      <h3 className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">
-        Pool Data by Epoch
-      </h3>
+      <h3 className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">Pool Data by Epoch</h3>
       {lineChartData.length > 0 ? (
         <>
           <ResponsiveContainer width="100%" height={400}>
@@ -207,16 +184,10 @@ const PoolGraphByEpoch = () => {
               <Line type="monotone" dataKey="ratio" stroke="#ff7300" name="Producer Pools Ratio" />
             </LineChart>
           </ResponsiveContainer>
-
           <h3 className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">
             Stake Distribution Heatmap
           </h3>
-          <svg
-            ref={d3Container}
-            width="100%"
-            height={450}
-            style={{ backgroundColor: '#3E4758', border: '1px solid #ccc', overflowX: 'auto' }}
-          />
+          <svg ref={d3Container} style={{ backgroundColor: '#3E4758', border: '1px solid #ccc', width: '100%' }} />
         </>
       ) : (
         <p>Loading data...</p>
