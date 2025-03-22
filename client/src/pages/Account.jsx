@@ -30,8 +30,6 @@ function Accounts() {
       const response = await axios.get(endpoint);
       const data = response.data;
 
-      console.log("Response (Accounts):", data);
-
       setAccountData(data);
       setCursor({ after: data.cursor.after, next: data.cursor.next });
       setIsSuccessful(true);
@@ -107,7 +105,6 @@ function Accounts() {
       const handleNextPage = () => {
         if (cursor.next) {
           setCursorStack(prevStack => [...prevStack, cursor.after]); // Add current cursor to stack
-          console.log("CURRENT URSPOR: ", currentCursor)
           fetchData(cursor.after);
           setCurrentPage(currentPage + 1);
         }
