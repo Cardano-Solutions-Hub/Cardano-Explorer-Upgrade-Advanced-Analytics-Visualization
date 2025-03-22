@@ -15,15 +15,24 @@ function Pools() {
   const [error, setError] = useState(null);
   const [cursor, setCursor] = useState({ after: null, next: false });
   const [currentPage, setCurrentPage] = useState(1);
+  const [cursorStack, setCursorStack] = useState([]); 
+  const [currentCursor, setCurrentCursor] = useState(null); // Store the current cursor
 
-  const fetchData = async () => {
+  const fetchData = async (pageCursor = null) => {
     setLoading(true);
     setIsSuccessful(false);
     try {
-      const response = await axios.get(`${POOL_API}.json?rows=true`);
-      const data = response.data;
+      let endpoint;
 
-      console.log("Response (Pools):", data);
+      if (pageCursor == null) {
+        endpoint = `${POOL_API}.json?rows=true`;
+      }
+      else {
+        endpoint = `${POOL_API}.json?rows=true&after=${pageCursor}`;
+      }
+
+      const response = await axios.get(endpoint);
+      const data = response.data;
 
       setPoolData(data);
       setCursor({ after: data.cursor.after, next: data.cursor.next });
@@ -110,19 +119,30 @@ function Pools() {
       }))
     : [];
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      fetchData(cursor.after);
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (cursor.next) {
-      fetchData(cursor.after);
-      setCurrentPage(currentPage + 1);
-    }
-  };
+    const handlePreviousPage = () => {
+      if (cursorStack.length > 0) {
+        const previousCursor = cursorStack[cursorStack.length - 2]; // Get the last cursor
+        console.log(previousCursor)
+        setCursorStack(prevStack => prevStack.slice(0, -1)); // Remove last cursor from stack
+        fetchData(previousCursor);
+        setCurrentCursor(previousCursor);
+        setCurrentPage(currentPage - 1);
+      } else if (currentPage === 2) {
+        fetchData(); // Fetch first page data
+        setCurrentCursor(null);
+        setCurrentPage(1);
+      }
+      };
+    
+    const handleNextPage = () => {
+      if (cursor.next) {
+        setCursorStack(prevStack => [...prevStack, cursor.after]); // Add current cursor to stack
+        console.log("CURRENT URSPOR: ", currentCursor)
+        fetchData(cursor.after);
+        setCurrentPage(currentPage + 1);
+      }
+    };
+  
 
   return (
     <>

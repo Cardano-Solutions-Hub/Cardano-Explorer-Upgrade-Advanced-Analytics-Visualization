@@ -7,6 +7,7 @@ import PoolIcon from "../assets/pools-icon.png";
 import TokenImage from "../assets/token-image.png";
 import TransactionImage from "../assets/coins.png";
 import MenuIcon from "../assets/menu-icon.png"; // Add an icon for the menu toggle button
+import AnalysisIcon from "../assets/analysis.png";
 
 const iconList = [
   { name: "Dashboard", icon: DashboardIcon, link: '/' },
@@ -15,6 +16,7 @@ const iconList = [
   { name: "Pools", icon: PoolIcon, link: '/pools' },
   { name: "Token", icon: TokenImage, link: '/tokens' },
   { name: "Accounts", icon: AccountIcon, link: '/accounts' },
+  { name: "Analysis", icon: AnalysisIcon, link: '/analysis-transactions' },
 ];
 
 // eslint-disable-next-line react/prop-types
