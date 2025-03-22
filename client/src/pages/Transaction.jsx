@@ -28,9 +28,15 @@ function Transactions() {
     setLoading(true);
     setIsSuccessful(false);
     try {
-      const response = await axios.get(
-        `${TRANSACTION_API}.json?rows=true&cursor=${pageCursor || ""}`
-      );
+      let endpoint;
+      
+      if (pageCursor == null) {
+        endpoint = `${TRANSACTION_API}.json?rows=true`
+      } else {
+        endpoint = `${TRANSACTION_API}.json?rows=true&after=${pageCursor}`
+      }
+      const response = await axios.get(endpoint);
+
       const data = response.data;
 
       console.log("Response (Tokens):", data);

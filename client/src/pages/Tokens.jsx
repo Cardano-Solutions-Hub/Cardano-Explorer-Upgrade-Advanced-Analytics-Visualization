@@ -21,14 +21,22 @@ function Tokens() {
   const [error, setError] = useState(null);
   const [cursor, setCursor] = useState({ after: null, next: false });
   const [currentPage, setCurrentPage] = useState(1);
+  const [cursorStack, setCursorStack] = useState([]); 
+  const [currentCursor, setCurrentCursor] = useState(null); // Store the current cursor
 
   const fetchData = async (pageCursor = null) => {
     setLoading(true);
     setIsSuccessful(false);
     try {
-      const response = await axios.get(
-        `${TOKEN_API}.json?rows=true&cursor=${pageCursor || ""}`
-      );
+      let endpoint;
+
+      if (pageCursor == null) {
+        endpoint = `${TOKEN_API}.json?rows=true`;
+      } else {
+        endpoint = `${TOKEN_API}.json?rows=true&after=${pageCursor}`;
+      }
+      const response = await axios.get(endpoint);
+
       const data = response.data;
 
       console.log("Response (Tokens):", data);
@@ -145,19 +153,29 @@ function Tokens() {
       ],
     })) || [];
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      fetchData(cursor.after);
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (cursor.next) {
-      fetchData(cursor.after);
-      setCurrentPage(currentPage + 1);
-    }
-  };
+    const handlePreviousPage = () => {
+      if (cursorStack.length > 0) {
+        const previousCursor = cursorStack[cursorStack.length - 2]; // Get the last cursor
+        console.log(previousCursor)
+        setCursorStack(prevStack => prevStack.slice(0, -1)); // Remove last cursor from stack
+        fetchData(previousCursor);
+        setCurrentCursor(previousCursor);
+        setCurrentPage(currentPage - 1);
+      } else if (currentPage === 2) {
+        fetchData(); // Fetch first page data
+        setCurrentCursor(null);
+        setCurrentPage(1);
+      }
+      };
+    
+      const handleNextPage = () => {
+        if (cursor.next) {
+          setCursorStack(prevStack => [...prevStack, cursor.after]); // Add current cursor to stack
+          console.log("CURRENT URSPOR: ", currentCursor)
+          fetchData(cursor.after);
+          setCurrentPage(currentPage + 1);
+        }
+      };
   return (
     <>
       <NavBar />
