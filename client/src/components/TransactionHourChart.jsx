@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import URL from '../../constants';
 
 const TransactionChart = () => {
   const [transactionData, setTransactionData] = useState([]);
@@ -9,7 +10,7 @@ const TransactionChart = () => {
   useEffect(() => {
     // Fetch transaction stats from the backend API
     axios
-      .get('http://localhost:5000/rest/v1/daily-stats') // Your endpoint
+      .get(`${URL}/rest/v1/daily-stats`) // Your endpoint
       .then((response) => {
         const data = response.data.data.transactionsPerMinute;
 
@@ -27,7 +28,7 @@ const TransactionChart = () => {
 
     // Fetch active accounts data from the AdaStat API
     axios
-      .get('http://localhost:5000/rest/v1/active-accounts') // Your active accounts endpoint
+      .get(`${URL}/rest/v1/active-accounts`) // Your active accounts endpoint
       .then((response) => {
         const data = response.data.data;
 
