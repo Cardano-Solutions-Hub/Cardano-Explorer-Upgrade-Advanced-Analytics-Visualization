@@ -1,4 +1,6 @@
-const BASE_URL = 'http://localhost:5000/rest/v1'
+import URL from '../constants'
+
+const BASE_URL = `${URL}/rest/v1`
 
 const EPOCH_API = `${BASE_URL}/epochs.json?rows=true`;
 const BLOCK_API = `${BASE_URL}/blocks`;

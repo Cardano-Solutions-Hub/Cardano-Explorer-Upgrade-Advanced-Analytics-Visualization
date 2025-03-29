@@ -219,18 +219,22 @@ function Pools() {
 
               <p className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">Pool Types</p>
 
-              <div className="overflow-x-auto w-full md:w-[35%]">
-                <Table headers={headers} bodies={poolTypeRows} />
+              <div className="overflow-x-auto w-full px-4 md:px-8">
+                <div className="w-full md:w-[35%]">
+                  <Table headers={headers} bodies={poolTypeRows} />
+                </div>
               </div>
 
               <p className="mx-8 mt-6 mb-4 font-bold text-2xl text-secondaryBg">Pools</p>
 
-              <div className="overflow-x-auto w-full md:w-[50%]">
-                <Table headers={rowheaders} bodies={rowsContent} />
+              <div className="overflow-x-auto w-full px-4 md:px-8">
+                <div className="w-full max-w-[95vw] lg:max-w-[90vw] xl:max-w-[85vw] mx-auto">
+                  <Table headers={rowheaders} bodies={rowsContent} />
+                </div>
               </div>
 
               {/* Pagination Controls */}
-              <div className="join mt-4 mx-auto md:ml-96 mb-6 flex justify-center">
+              <div className="join mt-4 mx-auto mb-6 flex justify-center">
                 <button
                   className="join-item btn"
                   disabled={currentPage === 1}

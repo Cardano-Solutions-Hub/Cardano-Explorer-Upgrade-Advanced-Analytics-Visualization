@@ -140,7 +140,7 @@ function Transactions() {
       <main className="flex flex-col lg:flex-row bg-primaryBg">
         <Menu />
         {loading && (
-          <div className="flex items-center justify-center w-full h-screen lg:ml-28">
+          <div className="flex items-center justify-center w-full h-screen absolute left-0 top-0 lg:ml-28 bg-primaryBg">
             <div className="text-black">
               <span className="loading loading-infinity loading-lg"></span>
             </div>
